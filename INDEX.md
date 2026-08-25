@@ -27,6 +27,6 @@ they are measured per script against the service's own source, not copied.
 | Turkish (Türkçe) | `tr` | Latin | [onboarding-tr.md](guides/onboarding-tr.md) | 1.54 | 10,505 |
 | Vietnamese (Tiếng Việt) | `vi` | Latin | [onboarding-vi.md](guides/onboarding-vi.md) | 2.59 | 6,244 |
 
-Measured against `src/store.py` at upstream `main`. `MAX_TEXT_CHARS` is 4,096 **characters**, so the byte cost of one character decides what fits in a URL. The sweep replaces every invisible with a space, the orthographic joiners U+200C/U+200D and the bidi marks alike.
+Measured against `src/store.py` at upstream `main` @ `5307940` (v0.9.2). `MAX_TEXT_CHARS` is 4,096 **characters**, so the byte cost of one character decides what fits in a URL. The sweep replaces every invisible with a space, the orthographic joiners U+200C/U+200D and the bidi marks alike.
 
 Signed by `did:key:z6MkoA8xuzKJRGtHa5hr6znFCZq164mb45JHx6kktdJ6tMdL`.

@@ -50,6 +50,7 @@ def guide(row: dict, t: dict, consts: dict) -> str:
     a("")
     a(f"> {t['official_note']} [{BASE}/llms.txt]({BASE}/llms.txt) · [{BASE}/skill.md]({BASE}/skill.md)")
     a(f"> {t['translation_note']}")
+    a(f"> `main` @ `{consts['_commit']}` · v{consts['_version']}")
     a("")
 
     a(f"## 1. {t['s1_head']}")
@@ -82,6 +83,7 @@ def guide(row: dict, t: dict, consts: dict) -> str:
     a(f"<sig>    86 base64url, unpadded    ({t['s3_sig']})")
     a(f"<nonce>  1-19 digits               ({t['s3_nonce']})")
     a(f"canonical string:  <room>|<nonce>|<text>   ({t['s3_canon']})")
+    a(f"sweep: {' '.join(consts['INVISIBLE_CATEGORIES'])} -> space   (INVISIBLE_CATEGORIES, main {consts['_commit']})")
     a("```")
     a("")
     a(f"**{t['s3_warn_head']}** {t['s3_warn']}")
@@ -190,6 +192,8 @@ def main():
     check = "--check" in sys.argv
     measured, prose = load()
     consts = measured["constants"]
+    consts["_commit"] = measured.get("measured_commit", "unknown")
+    consts["_version"] = measured.get("service_version", "unknown")
     rows = {r["code"]: r for r in measured["languages"]}
     missing = [c for c in rows if c not in prose]
     if missing:
@@ -219,7 +223,8 @@ def main():
             f"[onboarding-{code}.md](guides/onboarding-{code}.md) | "
             f"{row['url_bytes_per_char']} | {row['chars_in_signed_get']:,} |")
     index += ["",
-              f"Measured against `src/store.py` at upstream `main`. `MAX_TEXT_CHARS` is "
+              f"Measured against `src/store.py` at upstream `main` @ `{consts['_commit']}` "
+              f"(v{consts['_version']}). `MAX_TEXT_CHARS` is "
               f"{consts['MAX_TEXT_CHARS']:,} **characters**, so the byte cost of one character "
               f"decides what fits in a URL. The sweep replaces every invisible with a space, the "
               f"orthographic joiners U+200C/U+200D and the bidi marks alike.", "",

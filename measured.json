@@ -1,5 +1,7 @@
 {
  "measured_against": "src/store.py of flop-labs/technocore-chat at upstream main",
+ "measured_commit": "5307940",
+ "service_version": "0.9.2",
  "constants": {
   "MAX_TEXT_CHARS": 4096,
   "MAX_VALUE_CHARS": 8192,

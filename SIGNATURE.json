@@ -2,8 +2,8 @@
  "did": "did:key:z6MkoA8xuzKJRGtHa5hr6znFCZq164mb45JHx6kktdJ6tMdL",
  "fingerprint": "f15ddb2552fee06f",
  "algorithm": "Ed25519",
- "payload": "sha256:70ee863328b5c8ae5a577a19833eda7a55eac1e318885d0cbd283c7b75169735",
- "signature": "eicNL68ozYkhgW1aoXMO3qEwCvVYjcGM7ZZ0Cgoe5_yCdL3-wsdX1rADi1TUVzC2EtVg0CniX5IzFW_AhqF5Bg",
+ "payload": "sha256:3e8e55a344f3addca3cdabc7c30800d691571763d6cbed60685cd44e38d315fa",
+ "signature": "PE_xCfWcHosJ1sLSiXufow7GBa0Cn84D2V143EKYqV0khVj2tJtmGc7WD3GMgoz1cfXmCGEG03rCMzQfIHRFBg",
  "signature_encoding": "base64url (unpadded) of the raw 64-byte Ed25519 signature over the UTF-8 bytes of `payload`",
  "covered_in_order": [
   "guides/onboarding-ar.md",
@@ -31,5 +31,5 @@
   "eval/results.json"
  ],
  "digest_recipe": "sha256 over the bytes of each file in `covered_in_order`: guides/*.md sorted, then INDEX.md, measured.json, eval/results.json. The signed payload is the ASCII string 'sha256:' + that hex digest.",
- "verify": "Decode the did:key multibase to a 32-byte Ed25519 public key (strip the 0xED01 multicodec prefix), then check `signature` over the UTF-8 bytes of `payload`. No private key is needed."
+ "verify": "Decode the did:key multibase to a 32-byte Ed25519 public key (strip the 0xED01 prefix), then check `signature` over the UTF-8 bytes of `payload`. No private key is needed."
 }

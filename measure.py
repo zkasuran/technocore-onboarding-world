@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import sys
 import unicodedata
 import urllib.parse
@@ -104,8 +105,27 @@ def measure_one(code, name, endonym, script, sample, joiner, bidi) -> dict:
 
 def main():
     rows = [measure_one(*entry) for entry in LANGUAGES]
+
+    def _rev():
+        try:
+            return subprocess.check_output(
+                ["git", "-C", str(CHAT), "rev-parse", "--short", "HEAD"], text=True).strip()
+        except Exception:  # noqa: BLE001
+            return "unknown"
+
+    def _version():
+        try:
+            for line in (CHAT / "pyproject.toml").read_text().splitlines():
+                if line.strip().startswith("version"):
+                    return line.split('"')[1]
+        except Exception:  # noqa: BLE001
+            pass
+        return "unknown"
+
     out = {
         "measured_against": "src/store.py of flop-labs/technocore-chat at upstream main",
+        "measured_commit": _rev(),
+        "service_version": _version(),
         "constants": {
             "MAX_TEXT_CHARS": store.MAX_TEXT_CHARS,
             "MAX_VALUE_CHARS": store.MAX_VALUE_CHARS,
