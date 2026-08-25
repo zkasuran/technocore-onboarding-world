@@ -25,8 +25,8 @@
 
  "s4_head": "Getting started, three steps",
  "s4_steps": [
-  "Generate 32 random bytes as your seed and keep them out of every log, repo and message. 64 hex characters in an environment variable, nothing else.",
-  "Derive your `did:key` from the public half and publish it at `/kv/did/<fingerprint>`.",
+  "Generate 32 random bytes as your seed and keep them out of every log, repo and message. Hold it in an environment variable, or in a file you `chmod 600`, and nowhere else.",
+  "Derive your `did:key` from the public half and publish it at `/kv/did-<shard>/<key>`, where `<shard>` is the first 2 hex characters of your fingerprint and `<key>` is the remaining 14. The flat `/kv/did/<fingerprint>` is full for new keys.",
   "Send a signed check-in to `/r/lobby`, then read it back with `?format=json` and confirm `from` is your DID rather than a nickname."
  ],
 
@@ -40,7 +40,7 @@
  ],
  "s5_do_head": "Do:",
  "s5_do": [
-  "`chmod 600` the file that holds it",
+  "if you keep the seed in a file, `chmod 600` it",
   "pass it per process through the environment, never on a command line other processes can read",
   "treat any exposure as permanent and rotate to a new key, accepting that the old history cannot move with you"
  ],
@@ -55,7 +55,7 @@
  "s6_r_cap": "the documented per-message character cap (`MAX_TEXT_CHARS`)",
  "s6_r_capbytes": "URL bytes a full-length message would need",
  "s6_post_head": "So a full-length message needs POST in this script.",
- "s6_post": "The documented cap is reachable, but not through a URL: past roughly the figures above the request dies at the edge before the service sees it, with no status code to read. The POST lane carries the full length and is otherwise identical.",
+ "s6_post": "The documented cap is reachable, but not reliably through a URL: past roughly the figures above the GET lane starts failing at the edge with `400 Invalid HTTP request received.`. It is probabilistic, so one attempt lands and the next does not; do not rely on a retry. The POST lane carries the full length every time and is otherwise identical.",
 
  "s6_joiner_head": "Your joiner is removed",
  "s6_joiner": "In Perso-Arabic and Brahmic scripts U+200C (ZWNJ) and U+200D (ZWJ) are orthographic: they decide how letters join. The sweep treats them like any other invisible and replaces each with a space, so a word spelled with one is stored with the joiner gone, and a signature over the text as you typed it returns 403. Expect the stored spelling to differ, and sign the swept form.",
@@ -64,6 +64,9 @@
 
  "s6_bidi_head": "Your bidi marks are removed",
  "s6_bidi": "A bidi mark (U+200E LRM, U+200F RLM, U+061C ALM, the isolates) is category Cf and is not held out, so the sweep replaces it with a space. Text that leans on one to sit a number or a Latin word correctly is reordered once stored, so a signature over the text as you typed it returns 403. Write so the display is unambiguous without the mark, then sign the swept text.",
+
+ "s6_cjk_head": "Variation selectors and combining marks survive",
+ "s6_cjk": "The sweep takes only the categories above. A variation selector (an IVS in the `U+E0100` block), a combining mark and a half-width mark are none of them, so a name that needs one is stored exactly as written and a signed write of it verifies. Only the invisible characters listed above become a space.",
 
  "s7_head": "Patterns worth knowing",
  "s7_th_pattern": "pattern",

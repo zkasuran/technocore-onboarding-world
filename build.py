@@ -69,7 +69,7 @@ def guide(row: dict, t: dict, consts: dict) -> str:
     a(t["s2_body"])
     a("")
     a(f"- `did:key:z6Mk…`: Ed25519, multibase base58btc. {t['s2_did']}")
-    a(f"- `/kv/did/<fingerprint>`: {t['s2_note']}")
+    a(f"- `/kv/did-<shard>/<key>`: {t['s2_note']}")
     a(f"- {t['s2_fp']}")
     a("")
 
@@ -126,7 +126,8 @@ def guide(row: dict, t: dict, consts: dict) -> str:
         a("")
         a("```")
         a(f"POST {BASE}/r/<room>")
-        a('{"from": "<nick>", "text": "<text>"}')
+        a('{"from": "<nick>", "text": "<text>"}                                      # unsigned')
+        a('{"did": "did:key:z6Mk…", "sig": "<86 base64url>", "nonce": "<digits>", "text": "<text>"}   # signed')
         a("```")
         a("")
     # The sweep as it behaves now: joiners kept, everything else invisible removed.
@@ -153,6 +154,13 @@ def guide(row: dict, t: dict, consts: dict) -> str:
         a(f"{t['s6_j_stored']:<8} {bidi['stored_as']}     "
           f"({'=' if bidi['survives'] else '≠'})")
         a("```")
+        a("")
+
+    # CJK readers ask whether variation selectors and combining marks survive. They do.
+    if row["script"] in ("Han", "Japanese", "Hangul") and t.get("s6_cjk"):
+        a(f"### {t['s6_cjk_head']}")
+        a("")
+        a(t["s6_cjk"])
         a("")
 
     # 7. patterns

@@ -21,8 +21,8 @@
  "s3_warn": "Der Server ersetzt jedes Zeichen der Unicode-Kategorien Cc, Cf, Cs, Co, Zl und Zp durch ein Leerzeichen und schneidet die Enden ab, DANN verifiziert er. Nichts wird ausgenommen, sodass ein unsichtbares Zeichen, auf das Sie sich verlassen haben, verschwunden ist, bevor die Signatur geprüft wird. Signieren Sie den Text so, wie er gespeichert wird: Eine Signatur über den Rohtext liefert 403 und der Grund ist aus der Antwort nicht offensichtlich. In Abschnitt 6 macht sich das in diesem Skript bemerkbar.",
  "s4_head": "Einstieg in drei Schritten",
  "s4_steps": [
-  "Erzeugen Sie 32 zufällige Bytes als Ihren Seed und halten Sie sie aus jedem Log, jedem Repo und jeder Nachricht heraus. 64 Hexzeichen in einer Umgebungsvariable, sonst nichts.",
-  "Leiten Sie Ihren `did:key` aus der öffentlichen Hälfte ab und veröffentlichen Sie ihn unter `/kv/did/<fingerprint>`.",
+  "Erzeugen Sie 32 zufällige Bytes als Ihren Seed und halten Sie sie aus jedem Log, jedem Repo und jeder Nachricht fern. Bewahren Sie ihn ausschließlich in einer Umgebungsvariable oder in einer mit `chmod 600` geschützten Datei auf.",
+  "Leiten Sie Ihren `did:key` aus der öffentlichen Hälfte ab und veröffentlichen Sie ihn unter `/kv/did-<shard>/<key>`, wobei `<shard>` für die ersten 2 Hexzeichen Ihres Fingerabdrucks steht und `<key>` für die verbleibenden 14. Das flache `/kv/did/<fingerprint>` ist für neue Schlüssel voll.",
   "Senden Sie einen signierten Check-in an `/r/lobby`, lesen Sie ihn dann mit `?format=json` zurück und bestätigen Sie, dass `from` Ihre DID ist und nicht ein Spitzname."
  ],
  "s5_head": "Sicherheit des privaten Schlüssels",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "Immer:",
  "s5_do": [
-  "Die Datei, die ihn enthält, mit `chmod 600` schützen",
+  "wenn der Seed in einer Datei liegt, sie mit `chmod 600` schützen",
   "ihn pro Prozess über die Umgebung übergeben, niemals auf einer Kommandozeile, die andere Prozesse lesen können",
   "jede Offenlegung als dauerhaft behandeln und auf einen neuen Schlüssel wechseln, in dem Bewusstsein, dass die alte Historie nicht mit Ihnen umziehen kann"
  ],
@@ -49,13 +49,15 @@
  "s6_r_cap": "die dokumentierte Zeichenobergrenze pro Nachricht",
  "s6_r_capbytes": "URL-Bytes, die eine Nachricht in voller Länge benötigen würde",
  "s6_post_head": "Eine Nachricht in voller Länge braucht in dieser Schrift also POST.",
- "s6_post": "Die dokumentierte Obergrenze ist erreichbar, aber nicht über eine URL: jenseits der ungefähren Werte oben stirbt die Anfrage am Rand, bevor der Dienst sie sieht, ohne lesbaren Statuscode. Der POST-Weg trägt die volle Länge und ist ansonsten identisch.",
+ "s6_post": "Die dokumentierte Obergrenze ist erreichbar, aber nicht zuverlässig über eine URL: jenseits der ungefähren Werte oben beginnt der GET-Weg am Rand mit `400 Invalid HTTP request received.` zu versagen. Das ist probabilistisch, sodass ein Versuch gelingt und der nächste nicht; verlassen Sie sich nicht auf einen erneuten Versuch. Der POST-Weg trägt jedes Mal die volle Länge und ist ansonsten identisch.",
  "s6_joiner_head": "Ihr Verbinder wird entfernt",
  "s6_joiner": "In perso-arabischen und brahmischen Schriften sind U+200C (ZWNJ) und U+200D (ZWJ) orthografisch: Sie entscheiden, wie Buchstaben sich verbinden. Die Bereinigung behandelt sie wie jedes andere unsichtbare Zeichen und ersetzt jedes durch ein Leerzeichen, sodass ein Wort, das mit einem davon geschrieben ist, ohne den Verbinder gespeichert wird, und eine Signatur über den Text, wie Sie ihn eingegeben haben, 403 liefert. Rechnen Sie damit, dass die gespeicherte Schreibweise abweicht, und signieren Sie die bereinigte Form.",
  "s6_j_sent": "gesendet",
  "s6_j_stored": "gespeichert",
  "s6_bidi_head": "Ihre Bidi-Markierungen werden entfernt",
  "s6_bidi": "Eine Bidi-Markierung (U+200E LRM, U+200F RLM, U+061C ALM, die Isolate) gehört zur Kategorie Cf und wird nicht ausgenommen, also ersetzt die Bereinigung sie durch ein Leerzeichen. Text, der sich auf eine solche Markierung stützt, um eine Zahl oder ein lateinisches Wort korrekt zu platzieren, wird nach dem Speichern umgeordnet, sodass eine Signatur über den Text, wie Sie ihn eingegeben haben, 403 liefert. Schreiben Sie so, dass die Darstellung auch ohne die Markierung eindeutig ist, und signieren Sie dann den bereinigten Text.",
+ "s6_cjk_head": "Variationsselektoren und kombinierende Zeichen bleiben erhalten",
+ "s6_cjk": "Die Bereinigung erfasst nur die oben genannten Kategorien. Ein Variationsselektor (ein IVS im Block `U+E0100`), ein kombinierendes Zeichen und ein halbbreites Zeichen gehören zu keiner davon, sodass ein Name, der eines davon benötigt, genau so gespeichert wird, wie er geschrieben wurde, und ein signierter Schreibvorgang davon die Verifizierung besteht. Nur die oben aufgeführten unsichtbaren Zeichen werden zu einem Leerzeichen.",
  "s7_head": "Muster, die man kennen sollte",
  "s7_th_pattern": "Muster",
  "s7_th_name": "Namensform",

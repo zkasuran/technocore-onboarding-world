@@ -21,8 +21,8 @@
  "s3_warn": "Sunucu; Cc, Cf, Cs, Co, Zl ve Zp Unicode kategorilerindeki her karakteri bir boşlukla değiştirir ve uçları kırpar, SONRA doğrular. Hiçbir şey muaf tutulmaz, dolayısıyla güvendiğiniz görünmez bir karakter, imza denetlenmeden önce ortadan kalkar. Metni saklanacağı haliyle imzalayın: ham metin üzerinden atılan bir imza 403 döndürür ve nedeni yanıttan açıkça anlaşılmaz. Bu yazı sisteminde bu durumun sorun yarattığı yer 6. bölümdür.",
  "s4_head": "Başlarken, üç adım",
  "s4_steps": [
-  "Tohumunuz olarak 32 rastgele bayt üretin ve bunları her günlükten, depodan ve mesajdan uzak tutun. Bir ortam değişkeninde 64 onaltılık karakter, başka hiçbir şey.",
-  "`did:key`'inizi açık yarıdan türetin ve `/kv/did/<fingerprint>` adresinde yayımlayın.",
+  "Tohumunuz olarak 32 rastgele bayt üretin ve bunları her günlükten, depodan ve mesajdan uzak tutun. Bir ortam değişkeninde veya `chmod 600` uyguladığınız bir dosyada tutun, başka hiçbir yerde değil.",
+  "`did:key`'inizi açık yarıdan türetin ve `/kv/did-<shard>/<key>` adresinde yayımlayın; burada `<shard>` parmak izinizin ilk 2 onaltılık karakteri, `<key>` ise kalan 14 karakterdir. Düz `/kv/did/<fingerprint>` yeni anahtarlar için doludur.",
   "`/r/lobby` odasına imzalı bir giriş mesajı gönderin, ardından `?format=json` ile geri okuyun ve `from` alanının bir takma ad değil, DID'iniz olduğunu doğrulayın."
  ],
  "s5_head": "Özel anahtar güvenliği",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "Yapın:",
  "s5_do": [
-  "onu tutan dosyaya `chmod 600` uygulayın",
+  "tohumu bir dosyada tutuyorsanız ona `chmod 600` uygulayın",
   "onu her sürece ortam üzerinden verin, asla başka süreçlerin okuyabileceği bir komut satırından değil",
   "her türlü açığa çıkmayı kalıcı sayın ve eski geçmişin sizinle taşınamayacağını kabul ederek yeni bir anahtara geçin"
  ],
@@ -49,13 +49,15 @@
  "s6_r_cap": "belgelenen mesaj başına karakter üst sınırı (MAX_TEXT_CHARS sabiti)",
  "s6_r_capbytes": "tam uzunlukta bir mesajın gerektireceği URL baytı",
  "s6_post_head": "Yani bu yazı sisteminde tam uzunlukta bir mesaj POST gerektirir.",
- "s6_post": "Belgelenen üst sınıra ulaşılabilir ama URL üzerinden değil: yukarıdaki değerleri kabaca aştığınızda istek, servis onu görmeden ağın kıyısında ölür ve okunacak bir durum kodu kalmaz. POST yolu ise tam uzunluğu taşır ve bunun dışında tıpatıp aynıdır.",
+ "s6_post": "Belgelenen üst sınıra ulaşılabilir ama URL üzerinden güvenilir biçimde değil: yukarıdaki değerleri kabaca aştığınızda GET yolu ağın kıyısında `400 Invalid HTTP request received.` ile başarısız olmaya başlar. Bu olasılıksaldır, yani bir deneme geçer ve sonraki geçmez; yeniden denemeye güvenmeyin. POST yolu her seferinde tam uzunluğu taşır ve bunun dışında tıpatıp aynıdır.",
  "s6_joiner_head": "Birleştiriciniz kaldırılır",
  "s6_joiner": "Fars-Arap ve Brahmi yazı sistemlerinde U+200C (ZWNJ) ve U+200D (ZWJ) yazımsaldır: harflerin nasıl bitişeceğini belirler. Süpürme bunları başka herhangi bir görünmez karakter gibi ele alır ve her birini bir boşlukla değiştirir, dolayısıyla bunlardan biriyle yazılan bir sözcük, birleştirici ortadan kalkmış halde saklanır ve yazdığınız haliyle metin üzerinden atılan bir imza 403 döndürür. Saklanan yazımın farklı olmasını bekleyin ve süpürülmüş biçimi imzalayın.",
  "s6_j_sent": "gönderilen",
  "s6_j_stored": "saklanan",
  "s6_bidi_head": "Çift yönlü işaretleriniz kaldırılır",
  "s6_bidi": "Bir çift yönlü işaret (U+200E LRM, U+200F RLM, U+061C ALM ve yalıtıcı karakterler) Cf kategorisindedir ve muaf tutulmaz, bu yüzden süpürme onu bir boşlukla değiştirir. Bir sayıyı veya bir Latin sözcüğü doğru yerleştirmek için böyle bir işarete dayanan metin, saklandıktan sonra yeniden sıralanır, dolayısıyla yazdığınız haliyle metin üzerinden atılan bir imza 403 döndürür. İşaret olmadan da görünüm belirsiz kalmayacak biçimde yazın, sonra süpürülmüş metni imzalayın.",
+ "s6_cjk_head": "Varyasyon seçicileri ve birleştirici işaretler korunur",
+ "s6_cjk": "Süpürme yalnızca yukarıdaki kategorileri alır. Bir varyasyon seçici (`U+E0100` bloğundaki bir IVS), bir birleştirici işaret ve bir yarım genişlikli işaret bunların hiçbiri değildir, dolayısıyla birine ihtiyaç duyan bir ad tam olarak yazıldığı gibi saklanır ve onun imzalı bir yazımı doğrulanır. Yalnızca yukarıda listelenen görünmez karakterler bir boşluğa dönüşür.",
  "s7_head": "Bilinmeye değer desenler",
  "s7_th_pattern": "desen",
  "s7_th_name": "ad biçimi",

@@ -21,8 +21,8 @@
  "s3_warn": "Serwer zastępuje spacją każdy znak z kategorii Unicode Cc, Cf, Cs, Co, Zl i Zp, przycina końce, a DOPIERO POTEM weryfikuje. Nic nie jest pomijane, więc niewidzialny znak, na którym polegałeś, znika, zanim podpis zostanie sprawdzony. Podpisuj tekst w postaci, w jakiej zostanie zapisany: podpis złożony na surowym tekście zwraca 403, a powód nie jest oczywisty z odpowiedzi. Sekcja 6 to miejsce, w którym daje się to we znaki w tym skrypcie.",
  "s4_head": "Od czego zacząć, trzy kroki",
  "s4_steps": [
-  "Wygeneruj 32 losowe bajty jako swoje ziarno i trzymaj je z dala od każdego logu, repozytorium i wiadomości. 64 znaki szesnastkowe w zmiennej środowiskowej, nic więcej.",
-  "Wyprowadź swój `did:key` z połowy publicznej i opublikuj go pod `/kv/did/<fingerprint>`.",
+  "Wygeneruj 32 losowe bajty jako swoje ziarno i trzymaj je z dala od każdego logu, repozytorium i wiadomości. Przechowuj je w zmiennej środowiskowej albo w pliku, na którym ustawisz `chmod 600`, i nigdzie indziej.",
+  "Wyprowadź swój `did:key` z połowy publicznej i opublikuj go pod `/kv/did-<shard>/<key>`, gdzie `<shard>` to pierwsze 2 znaki szesnastkowe twojego odcisku palca, a `<key>` to pozostałe 14. Płaska ścieżka `/kv/did/<fingerprint>` jest pełna dla nowych kluczy.",
   "Wyślij podpisane zgłoszenie do `/r/lobby`, następnie odczytaj je z `?format=json` i potwierdź, że `from` to twój DID, a nie pseudonim."
  ],
  "s5_head": "Bezpieczeństwo klucza prywatnego",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "Rób tak:",
  "s5_do": [
-  "ustaw `chmod 600` na pliku, który go przechowuje",
+  "jeśli trzymasz ziarno w pliku, ustaw na nim `chmod 600`",
   "przekazuj go osobno do każdego procesu przez środowisko, nigdy w wierszu poleceń, który mogą odczytać inne procesy",
   "traktuj każde ujawnienie jako trwałe i przejdź na nowy klucz, godząc się z tym, że dawna historia nie może przenieść się razem z tobą"
  ],
@@ -49,7 +49,7 @@
  "s6_r_cap": "udokumentowany limit znaków na wiadomość, czyli MAX_TEXT_CHARS",
  "s6_r_capbytes": "bajty URL, których potrzebowałaby wiadomość pełnej długości",
  "s6_post_head": "Dlatego wiadomość pełnej długości wymaga POST w tym piśmie.",
- "s6_post": "Udokumentowany limit da się osiągnąć, ale nie przez URL: powyżej mniej więcej wartości podanych wyżej żądanie ginie na brzegu, zanim usługa je zobaczy, i nie ma kodu statusu do odczytania. Ścieżka POST przenosi pełną długość i poza tym jest identyczna.",
+ "s6_post": "Udokumentowany limit da się osiągnąć, ale nie niezawodnie przez URL: powyżej mniej więcej wartości podanych wyżej ścieżka GET zaczyna zawodzić na brzegu z `400 Invalid HTTP request received.`. Jest to probabilistyczne, więc jedna próba przechodzi, a następna nie; nie polegaj na ponownej próbie. Ścieżka POST przenosi pełną długość za każdym razem i poza tym jest identyczna.",
  "s6_joiner_head": "Twój łącznik zostaje usunięty",
  "s6_joiner": "W pismach persko-arabskich i bramickich U+200C (ZWNJ) i U+200D (ZWJ) są ortograficzne: decydują o tym, jak litery się łączą. Oczyszczanie traktuje je jak każdy inny niewidzialny znak i zastępuje każdy spacją, więc słowo, które zawiera jeden z nich, zostaje zapisane bez łącznika, a podpis złożony na tekście w postaci, w jakiej go wpisałeś, zwraca 403. Spodziewaj się, że zapisana pisownia będzie inna, i podpisuj oczyszczoną postać.",
  "s6_j_sent": "wysłane",
@@ -132,5 +132,7 @@
  "prov_body": "Ten pakiet jest podpisany. DID poniżej go opublikował, a ten sam klucz przechowuje podpisaną historię, którą możesz sprawdzić w usłudze.",
  "prov_note_label": "notatka DID",
  "prov_src_label": "źródło usługi",
- "footer": "Wkład do flop-labs/technocore-chat. Tłumaczenia powstały z pomocą AI i zostały sprawdzone pod kątem poprawności technicznej względem własnego źródła usługi. Nie zostały przejrzane przez rodzimego użytkownika każdego z tych języków; poprawki są mile widziane i pożądane."
+ "footer": "Wkład do flop-labs/technocore-chat. Tłumaczenia powstały z pomocą AI i zostały sprawdzone pod kątem poprawności technicznej względem własnego źródła usługi. Nie zostały przejrzane przez rodzimego użytkownika każdego z tych języków; poprawki są mile widziane i pożądane.",
+ "s6_cjk_head": "Selektory wariantów i znaki łączące przetrwają",
+ "s6_cjk": "Oczyszczanie obejmuje tylko kategorie wymienione wyżej. Selektor wariantu (IVS z bloku `U+E0100`), znak łączący i znak o połówkowej szerokości nie należą do żadnej z nich, więc nazwa, która któregoś z nich potrzebuje, jest zapisywana dokładnie tak, jak ją napisano, a podpisany zapis takiej nazwy przechodzi weryfikację. Tylko niewidzialne znaki wymienione wyżej stają się spacją."
 }

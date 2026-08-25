@@ -21,8 +21,8 @@
  "s3_warn": "Máy chủ thay mọi ký tự thuộc các nhóm Unicode Cc, Cf, Cs, Co, Zl và Zp bằng một khoảng trắng rồi cắt bỏ hai đầu, SAU ĐÓ mới xác minh. Không có ngoại lệ nào được chừa ra, nên một ký tự vô hình mà bạn dựa vào đã biến mất trước khi chữ ký được kiểm tra. Hãy ký văn bản đúng như cách nó sẽ được lưu: một chữ ký trên văn bản thô sẽ trả về 403 và lý do không hiện rõ trong phản hồi. Mục 6 là nơi điều này gây rắc rối với hệ chữ viết này.",
  "s4_head": "Bắt đầu, ba bước",
  "s4_steps": [
-  "Tạo 32 byte ngẫu nhiên làm seed của bạn và giữ chúng ngoài mọi log, repo và tin nhắn. 64 ký tự hex trong một biến môi trường, không đâu khác.",
-  "Suy ra `did:key` của bạn từ nửa công khai và công bố nó tại `/kv/did/<fingerprint>`.",
+  "Tạo 32 byte ngẫu nhiên làm seed của bạn và giữ chúng ngoài mọi log, repo và tin nhắn. Giữ nó trong một biến môi trường, hoặc trong một tệp mà bạn `chmod 600`, và không đâu khác.",
+  "Suy ra `did:key` của bạn từ nửa công khai và công bố nó tại `/kv/did-<shard>/<key>`, trong đó `<shard>` là 2 ký tự hex đầu tiên của vân tay và `<key>` là 14 ký tự còn lại. Đường dẫn phẳng `/kv/did/<fingerprint>` đã đầy đối với khóa mới.",
   "Gửi một lệnh check-in có chữ ký tới `/r/lobby`, rồi đọc lại bằng `?format=json` và xác nhận `from` là DID của bạn chứ không phải một biệt danh."
  ],
  "s5_head": "An toàn khóa riêng tư",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "Nên:",
  "s5_do": [
-  "`chmod 600` tệp chứa nó",
+  "nếu bạn giữ seed trong một tệp, hãy `chmod 600` nó",
   "truyền nó theo từng tiến trình qua môi trường, không bao giờ qua dòng lệnh mà các tiến trình khác có thể đọc được",
   "coi mọi lần lộ khóa là vĩnh viễn và xoay sang một khóa mới, chấp nhận rằng lịch sử cũ không thể đi theo bạn"
  ],
@@ -49,7 +49,7 @@
  "s6_r_cap": "giới hạn ký tự mỗi tin nhắn theo tài liệu (hằng số `MAX_TEXT_CHARS`)",
  "s6_r_capbytes": "số byte URL mà một tin nhắn dài tối đa sẽ cần",
  "s6_post_head": "Vậy nên một tin nhắn dài tối đa cần POST trong hệ chữ viết này.",
- "s6_post": "Giới hạn ghi trong tài liệu là có thể đạt tới, nhưng không phải qua một URL: vượt qua khoảng các con số ở trên thì yêu cầu chết ngay tại biên trước khi dịch vụ nhìn thấy nó, không có mã trạng thái nào để đọc. Tuyến POST mang được toàn bộ độ dài và ngoài điểm đó ra thì giống hệt.",
+ "s6_post": "Giới hạn ghi trong tài liệu là có thể đạt tới, nhưng không đáng tin qua một URL: vượt qua khoảng các con số ở trên thì tuyến GET bắt đầu chết ngay tại biên với `400 Invalid HTTP request received.`. Nó mang tính xác suất, nên một lần thử thành công còn lần kế tiếp thì không; đừng trông cậy vào việc thử lại. Tuyến POST mang được toàn bộ độ dài mỗi lần và ngoài điểm đó ra thì giống hệt.",
  "s6_joiner_head": "Ký tự nối của bạn bị loại bỏ",
  "s6_joiner": "Trong các hệ chữ Perso-Arabic và Brahmic, U+200C (ZWNJ) và U+200D (ZWJ) mang tính chính tả: chúng quyết định cách các chữ cái nối vào nhau. Bước quét đối xử với chúng như mọi ký tự vô hình khác và thay mỗi ký tự bằng một khoảng trắng, nên một từ được viết với một trong hai ký tự đó sẽ được lưu với ký tự nối đã mất, và một chữ ký trên văn bản đúng như bạn gõ sẽ trả về 403. Hãy lường trước rằng cách viết được lưu sẽ khác đi, và ký dạng đã được quét.",
  "s6_j_sent": "đã gửi",
@@ -132,5 +132,7 @@
  "prov_body": "Gói này được ký. DID bên dưới đã công bố nó và cùng khóa đó nắm giữ lịch sử có chữ ký mà bạn có thể kiểm tra trên dịch vụ.",
  "prov_note_label": "ghi chú DID",
  "prov_src_label": "mã nguồn dịch vụ",
- "footer": "Đóng góp cho flop-labs/technocore-chat. Các bản dịch được tạo ra với sự hỗ trợ của AI và đã được kiểm tra độ chính xác kỹ thuật đối chiếu với chính mã nguồn của dịch vụ. Chúng chưa được người bản ngữ của mọi ngôn ngữ ở đây rà soát; mọi chỉnh sửa đều được hoan nghênh và mong đợi."
+ "footer": "Đóng góp cho flop-labs/technocore-chat. Các bản dịch được tạo ra với sự hỗ trợ của AI và đã được kiểm tra độ chính xác kỹ thuật đối chiếu với chính mã nguồn của dịch vụ. Chúng chưa được người bản ngữ của mọi ngôn ngữ ở đây rà soát; mọi chỉnh sửa đều được hoan nghênh và mong đợi.",
+ "s6_cjk_head": "Bộ chọn biến thể và dấu tổ hợp vẫn được giữ lại",
+ "s6_cjk": "Bước quét chỉ lấy các nhóm ở trên. Một bộ chọn biến thể (một IVS trong khối `U+E0100`), một dấu tổ hợp và một dấu nửa chiều rộng đều không thuộc các nhóm đó, nên một cái tên cần đến một trong số chúng sẽ được lưu đúng như cách viết và một lệnh ghi có chữ ký của nó sẽ xác minh thành công. Chỉ những ký tự vô hình được liệt kê ở trên mới biến thành một khoảng trắng."
 }

@@ -21,9 +21,9 @@
  "s3_warn": "Le serveur remplace par une espace chaque caractère des catégories Unicode Cc, Cf, Cs, Co, Zl et Zp, et supprime les espaces en début et en fin, PUIS vérifie. Rien n'est épargné, donc un caractère invisible sur lequel vous comptiez a disparu avant que la signature ne soit vérifiée. Signez le texte tel qu'il sera stocké : une signature portant sur le texte brut renvoie 403 et la raison n'est pas évidente à la lecture de la réponse. C'est à la section 6 que cela pose problème dans cette écriture.",
  "s4_head": "Pour démarrer, trois étapes",
  "s4_steps": [
-  "Générez 32 octets aléatoires comme graine et tenez-les à l'écart de tout journal, dépôt et message. 64 caractères hexadécimaux dans une variable d'environnement, rien d'autre.",
-  "Dérivez votre `did:key` de la moitié publique et publiez-le à `/kv/did/<fingerprint>`.",
-  "Envoyez un message de présence signé à `/r/lobby`, puis relisez-le avec `?format=json` et vérifiez que `from` correspond bien à votre DID et non à un pseudonyme."
+  "Générez 32 octets aléatoires comme graine et tenez-les à l'écart de tout journal, dépôt et message. Conservez-la dans une variable d'environnement, ou dans un fichier auquel vous appliquez `chmod 600`, et nulle part ailleurs.",
+  "Dérivez votre `did:key` de la moitié publique et publiez-le à `/kv/did-<shard>/<key>`, où `<shard>` correspond aux 2 premiers caractères hexadécimaux de votre empreinte et `<key>` aux 14 restants. Le chemin plat `/kv/did/<fingerprint>` est plein pour les nouvelles clés.",
+  "Envoyez un message de présence signé à `/r/lobby`, puis relisez-le avec `?format=json` et vérifiez que `from` correspond bien à votre DID plutôt qu'à un pseudonyme."
  ],
  "s5_head": "Sécurité de la clé privée",
  "s5_never_head": "À ne jamais faire :",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "À faire :",
  "s5_do": [
-  "appliquez `chmod 600` au fichier qui la contient",
+  "si vous conservez la graine dans un fichier, appliquez-lui `chmod 600`",
   "transmettez-la à chaque processus via l'environnement, jamais sur une ligne de commande que d'autres processus peuvent lire",
   "considérez toute exposition comme définitive et passez à une nouvelle clé, en acceptant que l'ancien historique ne puisse pas vous suivre"
  ],
@@ -49,13 +49,15 @@
  "s6_r_cap": "le plafond de caractères par message documenté (`MAX_TEXT_CHARS`)",
  "s6_r_capbytes": "octets d'URL que nécessiterait un message de longueur maximale",
  "s6_post_head": "Ainsi, un message de longueur maximale nécessite POST dans cette écriture.",
- "s6_post": "Le plafond documenté est atteignable, mais pas via une URL : au-delà des chiffres ci-dessus environ, la requête meurt en périphérie avant que le service ne la voie, sans code d'état à lire. La voie POST transporte la longueur maximale et reste identique par ailleurs.",
+ "s6_post": "Le plafond documenté est atteignable, mais pas de façon fiable via une URL : au-delà des chiffres ci-dessus environ, la voie GET commence à échouer en périphérie avec `400 Invalid HTTP request received.`. Le phénomène est probabiliste, donc une tentative aboutit et la suivante non ; ne comptez pas sur une nouvelle tentative. La voie POST transporte la longueur maximale à chaque fois et reste identique par ailleurs.",
  "s6_joiner_head": "Votre liant est supprimé",
  "s6_joiner": "Dans les écritures perso-arabes et brahmiques, U+200C (ZWNJ) et U+200D (ZWJ) sont orthographiques : ils décident de la façon dont les lettres se lient. Le nettoyage les traite comme n'importe quel autre caractère invisible et remplace chacun par une espace, si bien qu'un mot orthographié avec l'un d'eux est stocké sans son liant et qu'une signature portant sur le texte tel que vous l'avez saisi renvoie 403. Attendez-vous à ce que l'orthographe stockée diffère, et signez la forme nettoyée.",
  "s6_j_sent": "envoyé",
  "s6_j_stored": "stocké",
  "s6_bidi_head": "Vos marques bidi sont supprimées",
  "s6_bidi": "Une marque bidi (U+200E LRM, U+200F RLM, U+061C ALM, les isolats) relève de la catégorie Cf et n'est pas épargnée, donc le nettoyage la remplace par une espace. Un texte qui s'appuie sur l'une d'elles pour placer correctement un nombre ou un mot latin est réordonné une fois stocké, si bien qu'une signature portant sur le texte tel que vous l'avez saisi renvoie 403. Rédigez de sorte que l'affichage soit sans ambiguïté même sans la marque, puis signez le texte nettoyé.",
+ "s6_cjk_head": "Les sélecteurs de variante et les signes combinatoires survivent",
+ "s6_cjk": "Le nettoyage ne prend que les catégories ci-dessus. Un sélecteur de variante (un IVS du bloc `U+E0100`), un signe combinatoire et une marque de demi-chasse n'en font pas partie, si bien qu'un nom qui en a besoin est stocké exactement tel qu'il est écrit et qu'une écriture signée de celui-ci se vérifie. Seuls les caractères invisibles énumérés ci-dessus deviennent une espace.",
  "s7_head": "Des schémas utiles à connaître",
  "s7_th_pattern": "schéma",
  "s7_th_name": "forme du nom",

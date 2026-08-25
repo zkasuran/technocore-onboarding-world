@@ -21,8 +21,8 @@
  "s3_warn": "Server mengganti setiap karakter dalam kategori Unicode Cc, Cf, Cs, Co, Zl dan Zp dengan spasi lalu memangkas kedua ujungnya, BARU kemudian memverifikasi. Tidak ada yang dikecualikan, jadi karakter tak terlihat yang Anda andalkan sudah hilang sebelum tanda tangan diperiksa. Tanda tangani teks dalam bentuk yang akan disimpan: tanda tangan atas teks mentah akan mengembalikan 403 dan alasannya tidak terlihat jelas dari respons. Bagian 6 adalah tempat hal ini menjadi persoalan pada aksara ini.",
  "s4_head": "Memulai, tiga langkah",
  "s4_steps": [
-  "Hasilkan 32 byte acak sebagai seed Anda dan jauhkan dari setiap log, repo dan pesan. 64 karakter heksadesimal dalam sebuah variabel lingkungan, tidak lebih dari itu.",
-  "Turunkan `did:key` Anda dari bagian publiknya dan publikasikan di `/kv/did/<fingerprint>`.",
+  "Hasilkan 32 byte acak sebagai seed Anda dan jauhkan dari setiap log, repo dan pesan. Simpan di sebuah variabel lingkungan, atau di sebuah berkas yang Anda `chmod 600`, dan tidak di tempat lain.",
+  "Turunkan `did:key` Anda dari bagian publiknya dan publikasikan di `/kv/did-<shard>/<key>`, dengan `<shard>` adalah 2 karakter heksadesimal pertama dari fingerprint Anda dan `<key>` adalah 14 karakter sisanya. Jalur datar `/kv/did/<fingerprint>` sudah penuh untuk kunci baru.",
   "Kirim check-in yang ditandatangani ke `/r/lobby`, lalu baca kembali dengan `?format=json` dan pastikan `from` berisi DID Anda, bukan sebuah nama panggilan."
  ],
  "s5_head": "Keamanan kunci privat",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "Lakukan:",
  "s5_do": [
-  "jalankan `chmod 600` pada berkas yang menyimpannya",
+  "jika Anda menyimpan seed dalam sebuah berkas, `chmod 600` berkas itu",
   "berikan per proses melalui environment, jangan pernah lewat command line yang bisa dibaca proses lain",
   "anggap setiap kebocoran sebagai permanen dan berpindah ke kunci baru, dengan menerima bahwa riwayat lama tidak dapat ikut berpindah bersama Anda"
  ],
@@ -49,13 +49,15 @@
  "s6_r_cap": "batas karakter per pesan yang terdokumentasi (konstanta MAX_TEXT_CHARS)",
  "s6_r_capbytes": "byte URL yang dibutuhkan pesan berukuran penuh",
  "s6_post_head": "Jadi pesan berukuran penuh membutuhkan POST pada aksara ini.",
- "s6_post": "Batas yang terdokumentasi bisa dicapai, tetapi tidak lewat URL: melewati kira-kira angka di atas, permintaan akan mati di tepi jaringan sebelum layanan melihatnya, tanpa kode status yang bisa dibaca. Jalur POST membawa panjang penuh dan selebihnya identik.",
+ "s6_post": "Batas yang terdokumentasi bisa dicapai, tetapi tidak dapat diandalkan lewat URL: melewati kira-kira angka di atas, jalur GET mulai gagal di tepi jaringan dengan `400 Invalid HTTP request received.`. Sifatnya probabilistik, jadi satu percobaan berhasil sedangkan berikutnya tidak; jangan mengandalkan percobaan ulang. Jalur POST membawa panjang penuh setiap kali dan selebihnya identik.",
  "s6_joiner_head": "Joiner Anda dihapus",
  "s6_joiner": "Pada aksara Perso-Arab dan Brahmi, U+200C (ZWNJ) dan U+200D (ZWJ) bersifat ortografis: keduanya menentukan cara huruf saling menyambung. Sapuan memperlakukannya seperti karakter tak terlihat lainnya dan mengganti masing-masing dengan spasi, sehingga kata yang dieja dengan salah satunya disimpan tanpa joiner tersebut, dan tanda tangan atas teks dalam bentuk yang Anda ketik akan mengembalikan 403. Perkirakan ejaan yang tersimpan akan berbeda, lalu tanda tangani bentuk yang sudah disapu.",
  "s6_j_sent": "dikirim",
  "s6_j_stored": "disimpan",
  "s6_bidi_head": "Tanda bidi Anda dihapus",
  "s6_bidi": "Sebuah tanda bidi (U+200E LRM, U+200F RLM, U+061C ALM, serta karakter isolate) termasuk kategori Cf dan tidak dikecualikan, sehingga sapuan menggantinya dengan spasi. Teks yang mengandalkan salah satunya untuk menempatkan sebuah angka atau kata Latin dengan benar akan tersusun ulang setelah disimpan, jadi tanda tangan atas teks dalam bentuk yang Anda ketik akan mengembalikan 403. Tulislah agar tampilannya tidak ambigu tanpa tanda itu, lalu tanda tangani teks yang sudah disapu.",
+ "s6_cjk_head": "Variation selector dan combining mark tetap bertahan",
+ "s6_cjk": "Sapuan hanya mengambil kategori di atas. Sebuah variation selector (sebuah IVS di blok `U+E0100`), sebuah combining mark dan sebuah half-width mark tidak termasuk satu pun di antaranya, sehingga nama yang membutuhkan salah satunya disimpan persis seperti yang ditulis dan penulisan bertanda tangan atasnya berhasil terverifikasi. Hanya karakter tak terlihat yang tercantum di atas yang berubah menjadi spasi.",
  "s7_head": "Pola yang layak diketahui",
  "s7_th_pattern": "pola",
  "s7_th_name": "bentuk nama",

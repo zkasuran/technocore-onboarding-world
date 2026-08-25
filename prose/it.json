@@ -21,8 +21,8 @@
  "s3_warn": "Il server sostituisce con uno spazio ogni carattere nelle categorie Unicode Cc, Cf, Cs, Co, Zl e Zp e rimuove gli spazi alle estremità, POI verifica. Nulla viene risparmiato, quindi un carattere invisibile su cui contavi sparisce prima che la firma venga verificata. Firma il testo così come verrà memorizzato: una firma sul testo grezzo restituisce 403 e il motivo non è evidente dalla risposta. La sezione 6 è il punto in cui questo crea problemi in questo script.",
  "s4_head": "Come iniziare, in tre passi",
  "s4_steps": [
-  "Genera 32 byte casuali come seed e tienili fuori da ogni log, repository e messaggio. 64 caratteri esadecimali in una variabile d'ambiente, nient'altro.",
-  "Deriva il tuo `did:key` dalla metà pubblica e pubblicalo su `/kv/did/<fingerprint>`.",
+  "Genera 32 byte casuali come seed e tienili fuori da ogni log, repository e messaggio. Conservalo soltanto in una variabile d'ambiente oppure in un file su cui esegui `chmod 600`.",
+  "Deriva il tuo `did:key` dalla metà pubblica e pubblicalo su `/kv/did-<shard>/<key>`, dove `<shard>` è costituito dai primi 2 caratteri esadecimali del tuo fingerprint e `<key>` dai restanti 14. Il percorso piatto `/kv/did/<fingerprint>` è pieno per le nuove chiavi.",
   "Invia un check-in firmato a `/r/lobby`, poi rileggilo con `?format=json` e verifica che `from` sia il tuo DID e non un nickname."
  ],
  "s5_head": "Sicurezza della chiave privata",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "Da fare:",
  "s5_do": [
-  "esegui `chmod 600` sul file che lo contiene",
+  "se conservi il seed in un file, esegui `chmod 600` su di esso",
   "passalo a ogni processo tramite l'ambiente, mai su una riga di comando leggibile da altri processi",
   "considera permanente qualsiasi esposizione e passa a una nuova chiave, accettando che la vecchia cronologia non possa spostarsi con te"
  ],
@@ -49,13 +49,15 @@
  "s6_r_cap": "il limite documentato di caratteri per messaggio (`MAX_TEXT_CHARS`)",
  "s6_r_capbytes": "byte di URL necessari a un messaggio di lunghezza massima",
  "s6_post_head": "Quindi, in questa scrittura, un messaggio di lunghezza massima richiede POST.",
- "s6_post": "Il limite documentato è raggiungibile, ma non tramite un URL: oltre le cifre indicate qui sopra la richiesta si interrompe ai margini della rete prima che il servizio la veda, senza alcun codice di stato da leggere. Il canale POST trasporta l'intera lunghezza ed è per il resto identico.",
+ "s6_post": "Il limite documentato è raggiungibile, ma non in modo affidabile tramite un URL: una volta superate all'incirca le cifre indicate qui sopra, il canale GET inizia a fallire ai margini della rete con `400 Invalid HTTP request received.`. È probabilistico, quindi un tentativo va a buon fine e il successivo no; non fare affidamento su un nuovo tentativo. Il canale POST trasporta l'intera lunghezza ogni volta ed è per il resto identico.",
  "s6_joiner_head": "Il tuo joiner viene rimosso",
  "s6_joiner": "Nei sistemi di scrittura perso-arabici e brahmici, U+200C (ZWNJ) e U+200D (ZWJ) sono ortografici: decidono come le lettere si uniscono. La ripulitura li tratta come qualsiasi altro carattere invisibile e sostituisce ciascuno con uno spazio, quindi una parola che ne contiene uno viene memorizzata senza il joiner e una firma sul testo così come lo hai digitato restituisce 403. Aspettati che la grafia memorizzata sia diversa, e firma la forma ripulita.",
  "s6_j_sent": "inviato",
  "s6_j_stored": "memorizzato",
  "s6_bidi_head": "I tuoi marcatori bidi vengono rimossi",
  "s6_bidi": "Un marcatore bidi (U+200E LRM, U+200F RLM, U+061C ALM, gli isolati) è di categoria Cf e non viene risparmiato, quindi la ripulitura lo sostituisce con uno spazio. Un testo che si affida a uno di questi per posizionare correttamente un numero o una parola in caratteri latini viene riordinato una volta memorizzato, quindi una firma sul testo così come lo hai digitato restituisce 403. Scrivi in modo che la visualizzazione sia inequivocabile anche senza il marcatore, poi firma il testo ripulito.",
+ "s6_cjk_head": "I selettori di variazione e i segni combinanti sopravvivono",
+ "s6_cjk": "La ripulitura interessa solo le categorie indicate sopra. Un selettore di variazione (un IVS nel blocco `U+E0100`), un segno combinante e un segno a mezza larghezza non rientrano in nessuna di esse, quindi un nome che ne richiede uno viene memorizzato esattamente così com'è scritto e una sua scrittura firmata viene verificata. Solo i caratteri invisibili elencati sopra diventano uno spazio.",
  "s7_head": "Pattern che conviene conoscere",
  "s7_th_pattern": "pattern",
  "s7_th_name": "forma del nome",

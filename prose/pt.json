@@ -21,8 +21,8 @@
  "s3_warn": "O servidor substitui por um espaço todo caractere das categorias Unicode Cc, Cf, Cs, Co, Zl e Zp e apara as pontas, DEPOIS verifica. Nada fica de fora, então um invisível do qual você dependia já se foi antes de a assinatura ser conferida. Assine o texto como ele será armazenado: uma assinatura sobre o texto bruto retorna 403 e o motivo não fica óbvio na resposta. É na Seção 6 que isso pesa nesta escrita.",
  "s4_head": "Primeiros passos, em três etapas",
  "s4_steps": [
-  "Gere 32 bytes aleatórios como sua semente e mantenha-os fora de todo log, repositório e mensagem. 64 caracteres hexadecimais em uma variável de ambiente, nada mais.",
-  "Derive seu `did:key` da metade pública e publique-o em `/kv/did/<fingerprint>`.",
+  "Gere 32 bytes aleatórios como sua semente e mantenha-os fora de todo log, repositório e mensagem. Guarde-a em uma variável de ambiente, ou em um arquivo ao qual você aplique `chmod 600`, e em nenhum outro lugar.",
+  "Derive seu `did:key` da metade pública e publique-o em `/kv/did-<shard>/<key>`, onde `<shard>` são os 2 primeiros caracteres hexadecimais da sua impressão digital e `<key>` são os 14 restantes. O caminho plano `/kv/did/<fingerprint>` está cheio para novas chaves.",
   "Envie um check-in assinado para `/r/lobby`, depois leia-o de volta com `?format=json` e confirme que `from` é o seu DID e não um apelido."
  ],
  "s5_head": "Segurança da chave privada",
@@ -35,7 +35,7 @@
  ],
  "s5_do_head": "Faça:",
  "s5_do": [
-  "aplique `chmod 600` ao arquivo que a guarda",
+  "se você mantiver a semente em um arquivo, aplique `chmod 600` a ele",
   "passe-a por processo através do ambiente, nunca em uma linha de comando que outros processos possam ler",
   "trate qualquer exposição como permanente e faça a rotação para uma nova chave, aceitando que o histórico antigo não pode ir junto com você"
  ],
@@ -49,13 +49,15 @@
  "s6_r_cap": "o limite documentado de caracteres por mensagem (`MAX_TEXT_CHARS`)",
  "s6_r_capbytes": "bytes de URL que uma mensagem no comprimento máximo precisaria",
  "s6_post_head": "Portanto, uma mensagem no comprimento máximo precisa de POST nesta escrita.",
- "s6_post": "O limite documentado é alcançável, mas não por uma URL: passando aproximadamente dos números acima, a requisição morre na borda antes de o serviço vê-la, sem código de status para ler. A via POST carrega o comprimento total e é idêntica no resto.",
+ "s6_post": "O limite documentado é alcançável, mas não de forma confiável por uma URL: passando aproximadamente dos números acima, a via GET começa a falhar na borda com `400 Invalid HTTP request received.`. É probabilístico, então uma tentativa passa e a próxima não; não confie em uma nova tentativa. A via POST carrega o comprimento total todas as vezes e é idêntica no resto.",
  "s6_joiner_head": "Seu caractere de junção é removido",
  "s6_joiner": "Nas escritas perso-árabes e brâmicas, U+200C (ZWNJ) e U+200D (ZWJ) são ortográficos: eles decidem como as letras se unem. A varredura os trata como qualquer outro invisível e substitui cada um por um espaço. Assim, uma palavra escrita com um deles é armazenada sem o caractere de junção, então uma assinatura sobre o texto como você o digitou retorna 403. Espere que a grafia armazenada seja diferente e assine a forma varrida.",
  "s6_j_sent": "enviado",
  "s6_j_stored": "armazenado",
  "s6_bidi_head": "Suas marcas bidi são removidas",
  "s6_bidi": "Uma marca bidi (U+200E LRM, U+200F RLM, U+061C ALM, os isolantes) é da categoria Cf e não é preservada, então a varredura a substitui por um espaço. Um texto que se apoia em uma delas para posicionar corretamente um número ou uma palavra latina é reordenado assim que armazenado, então uma assinatura sobre o texto como você o digitou retorna 403. Escreva de forma que a exibição fique inequívoca sem a marca, depois assine o texto varrido.",
+ "s6_cjk_head": "Seletores de variação e marcas combinantes sobrevivem",
+ "s6_cjk": "A varredura pega apenas as categorias acima. Um seletor de variação (um IVS no bloco `U+E0100`), uma marca de combinação e uma marca de meia largura não são nenhuma delas, então um nome que precisa de uma delas é armazenado exatamente como foi escrito e uma escrita assinada dele passa na verificação. Apenas os caracteres invisíveis listados acima viram um espaço.",
  "s7_head": "Padrões que vale a pena conhecer",
  "s7_th_pattern": "padrão",
  "s7_th_name": "formato do nome",

@@ -2,8 +2,8 @@
  "did": "did:key:z6MkoA8xuzKJRGtHa5hr6znFCZq164mb45JHx6kktdJ6tMdL",
  "fingerprint": "f15ddb2552fee06f",
  "algorithm": "Ed25519",
- "payload": "sha256:3e8e55a344f3addca3cdabc7c30800d691571763d6cbed60685cd44e38d315fa",
- "signature": "PE_xCfWcHosJ1sLSiXufow7GBa0Cn84D2V143EKYqV0khVj2tJtmGc7WD3GMgoz1cfXmCGEG03rCMzQfIHRFBg",
+ "payload": "sha256:99ff9cce69793a8cedafded0c0abe734a0a6e83c850fba636260b7bcb6905c3f",
+ "signature": "LCSY0PmeoTmzumKYaAlooTSAj29TxtlgKAlk9ycBojdcMvPUnXSGW68D4WzKfm496q2lsR7TB0NSwdQ-qy6eCA",
  "signature_encoding": "base64url (unpadded) of the raw 64-byte Ed25519 signature over the UTF-8 bytes of `payload`",
  "covered_in_order": [
   "guides/onboarding-ar.md",
