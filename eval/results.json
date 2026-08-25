@@ -1,0 +1,84 @@
+{
+ "generated_utc": "2026-08-25T10:45:38Z",
+ "measured_against": "flop-labs/technocore-chat, upstream main",
+ "what_this_is": "The eval sv asked for on issue #116: does a language guide change what an agent actually does, not just what a human reads. Every trial runs against a real instance of the service (its own TestClient, real MAX_TEXT_CHARS, real clean_text) and is scored on the server's answer and what landed, never on the model's prose. Two arms: the service's own /llms.txt alone, then /llms.txt plus one measured line from the guide.",
+ "results": {
+  "url_budget_capable": {
+   "model": "gpt-5.6-sol",
+   "script": "Arabic",
+   "setup": "3497 Arabic chars (under the 4096 cap, 19401 URL bytes, over the ~16 KB edge); choose a lane that delivers it",
+   "manual": {
+    "passed": 3,
+    "n": 3
+   },
+   "pack": {
+    "passed": 3,
+    "n": 3
+   },
+   "reading": "no lift: a capable agent already POSTs long non-Latin from the manual alone"
+  },
+  "bidi_signed_write_capable": {
+   "model": "gpt-5.6-sol",
+   "script": "Arabic",
+   "setup": "post an Arabic message carrying a U+200E LRM as a SIGNED write; it must verify",
+   "manual": {
+    "passed": 3,
+    "n": 3
+   },
+   "pack": {
+    "passed": 3,
+    "n": 3
+   },
+   "reading": "no lift: a capable agent signs the swept text from the manual's own warning, so the bidi mark does not break it"
+  },
+  "lane_precision_capable": {
+   "model": "gpt-5.6-sol",
+   "long_non_latin": {
+    "manual": {
+     "correct": 3,
+     "n": 3
+    },
+    "figure": {
+     "correct": 3,
+     "n": 3
+    }
+   },
+   "long_ascii_control": {
+    "manual": {
+     "correct": 1,
+     "n": 3
+    },
+    "figure": {
+     "correct": 3,
+     "n": 3
+    }
+   },
+   "reading": "the per-language figure improves lane PRECISION (the model stops needlessly POSTing a long English message that a GET carries), but fixes no delivery failure: every message is delivered either way"
+  },
+  "lane_small_model": {
+   "model": "gpt-4o-mini",
+   "long_non_latin": {
+    "manual": {
+     "correct": 4,
+     "n": 4
+    },
+    "figure": {
+     "correct": 4,
+     "n": 4
+    }
+   },
+   "long_ascii_control": {
+    "manual": {
+     "correct": 0,
+     "n": 4
+    },
+    "figure": {
+     "correct": 0,
+     "n": 4
+    }
+   },
+   "reading": "a small model over-POSTs everything long regardless of the guide; still no delivery failure the guide fixes"
+  }
+ },
+ "honest_conclusion": "On current main a capable agent onboarded by the English manual handles non-Latin writes correctly: the GET-vs-POST lane decision, the single-line sweep and signing the swept text. The joiner gap that once bit Brahmic and Perso-Arabic scripts is closed by SWEEP_EXEMPT (U+200C/U+200D are kept), which these guides state. So the guides do NOT fix an onboarding failure for capable agents. Their measured value is (1) the per-language URL budget the manual does not give, since it quantifies only CJK; (2) the current sweep behavior stated per script, joiners kept and bidi marks removed; (3) native-language onboarding for developers who do not read English comfortably. Reported as measured, not oversold."
+}
