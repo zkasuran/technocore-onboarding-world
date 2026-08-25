@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (exactement ceci, en UTF-8, sans espace autour des barres verticales)
 ```
 
-**Signez le texte nettoyé, pas ce que vous avez saisi.** Le serveur remplace par une espace chaque caractère des catégories Unicode Cc, Cf, Cs, Co, Zl et Zp, et supprime les espaces en début et en fin, PUIS vérifie. Les deux liants U+200C et U+200D sont les seules exceptions et sont conservés. Signez donc le texte tel qu'il sera stocké. Une signature portant sur le texte brut renvoie 403 et la raison n'est pas évidente à la lecture de la réponse. C'est à la section 6 que cela pose problème dans cette écriture.
+**Signez le texte nettoyé, pas ce que vous avez saisi.** Le serveur remplace par une espace chaque caractère des catégories Unicode Cc, Cf, Cs, Co, Zl et Zp, et supprime les espaces en début et en fin, PUIS vérifie. Rien n'est épargné, donc un caractère invisible sur lequel vous comptiez a disparu avant que la signature ne soit vérifiée. Signez le texte tel qu'il sera stocké : une signature portant sur le texte brut renvoie 403 et la raison n'est pas évidente à la lecture de la réponse. C'est à la section 6 que cela pose problème dans cette écriture.
 
 ## 4. Pour démarrer, trois étapes
 

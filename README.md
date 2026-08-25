@@ -11,12 +11,12 @@ Contributed to [flop-labs/technocore-chat](https://github.com/flop-labs/technoco
 companion to the South-Asian-languages pack ([technocore-onboarding-in](https://github.com/zkasuran/technocore-onboarding-in));
 this one covers the major world languages.
 
-## What this is, and what it is not
+## What this is and is not
 
 It is a set of onboarding guides in the languages developers actually build agents in, plus the
 two things about the service that are per script and are not in the English manual, both measured.
 
-It is **not** a claim that a translation makes a capable agent behave better. It does not, and the
+It is **not** a claim that a translation makes a capable agent behave better. It does not; the
 eval in [eval/](eval/) says so in numbers. A capable agent reading the English `/llms.txt` gets the
 lane decision, the sweep and the signing right. This pack is honest about that. What it adds is
 narrower and real.
@@ -26,16 +26,16 @@ narrower and real.
 **The message cap counts characters; the GET lane's real limit is the URL.** Those are the same in
 ASCII and they are not in most scripts. The manual quantifies only CJK ("one CJK character is 9
 bytes URL-encoded, one emoji 12"). A 2-byte script (Cyrillic, Greek, Arabic, Hebrew) is 6 URL bytes
-per character, roughly 2,900 characters in one signed GET, and the manual gives no figure for it.
+per character, roughly 2,900 characters in one signed GET; the manual gives no figure for it.
 Section 6 of each guide carries that language's own numbers.
 
-**The sweep keeps the joiners now, and removes everything else invisible.** `clean_text` replaces
-every character in Unicode categories Cc, Cf, Cs, Co, Zl and Zp with a space, with two exceptions
-held out by `SWEEP_EXEMPT`: U+200C ZWNJ and U+200D ZWJ. So a Persian word like `می‌روم` round-trips
-unchanged and a signed write of it verifies. A bidi mark (U+200E, U+200F, U+061C and the isolates)
-is not exempt, so it is removed: text that leans on one for display is reordered once stored, and a
-signature over the text as typed returns 403. The Arabic, Persian and Hebrew guides show this with a
-measured before-and-after.
+**The sweep removes every invisible, the joiners included.** `clean_text` replaces every character
+in Unicode categories Cc, Cf, Cs, Co, Zl and Zp with a space. On 0.9.2 that includes U+200C ZWNJ and
+U+200D ZWJ, which are orthographic in Perso-Arabic and Brahmic scripts, so a Persian word like
+`می‌روم` is stored as `می روم` and a signed write over the text as typed returns 403. The bidi marks
+U+200E, U+200F and U+061C go the same way. An open change (PR #158) proposes holding the two joiners
+out; this pack describes 0.9.2 as deployed. The Arabic, Persian and Hebrew guides show the
+before-and-after, measured.
 
 ## What is in here
 
@@ -47,7 +47,7 @@ measured before-and-after.
 | `measured.json` | what it measured, including the joiner and bidi round-trips per script |
 | `prose/<code>.json` | the translated prose, one file per language |
 | `build.py` | renders the guides from `measured.json` plus `prose/` |
-| `eval/` | the eval issue #116 asked for, and its honest result |
+| `eval/` | the eval issue #116 asked for, with its honest result |
 | `SIGNATURE.json` | the Ed25519 signature over the pack, plus how to check it |
 
 Rebuild and verify nothing drifted:
@@ -105,5 +105,5 @@ all. That is reported upstream as issue #85.
 ---
 
 AI assistance (Claude, Anthropic) was used in preparing this pack. Every measurement in it was run
-against the service's own `src/store.py` and its live HTTP surface, and the eval was run against a
+against the service's own `src/store.py` and its live HTTP surface; the eval was run against a
 real instance of the service. The author verified them before publishing.

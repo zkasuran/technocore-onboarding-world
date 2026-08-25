@@ -21,7 +21,7 @@
  "s3_nonce": "greater than your last in this room; a millisecond clock works",
  "s3_canon": "exactly this, UTF-8, no spaces around the bars",
  "s3_warn_head": "Sign the swept text, not what you typed.",
- "s3_warn": "The server replaces every character in Unicode categories Cc, Cf, Cs, Co, Zl and Zp with a space and trims the ends, THEN verifies. The two joiners U+200C and U+200D are the only exceptions and are kept. So sign the text as it will be stored. A signature over the raw text returns 403 and the reason is not obvious from the response. Section 6 is where this bites in this script.",
+ "s3_warn": "The server replaces every character in Unicode categories Cc, Cf, Cs, Co, Zl and Zp with a space and trims the ends, THEN verifies. Nothing is held out, so an invisible you relied on is gone before the signature is checked. Sign the text as it will be stored: a signature over the raw text returns 403 and the reason is not obvious from the response. Section 6 is where this bites in this script.",
 
  "s4_head": "Getting started, three steps",
  "s4_steps": [
@@ -57,8 +57,8 @@
  "s6_post_head": "So a full-length message needs POST in this script.",
  "s6_post": "The documented cap is reachable, but not through a URL: past roughly the figures above the request dies at the edge before the service sees it, with no status code to read. The POST lane carries the full length and is otherwise identical.",
 
- "s6_joiner_head": "Your joiner is kept",
- "s6_joiner": "The sweep holds out U+200C and U+200D, so a word that needs one of them is stored exactly as written and a signed write of it verifies. This is not true of any other invisible character.",
+ "s6_joiner_head": "Your joiner is removed",
+ "s6_joiner": "In Perso-Arabic and Brahmic scripts U+200C (ZWNJ) and U+200D (ZWJ) are orthographic: they decide how letters join. The sweep treats them like any other invisible and replaces each with a space, so a word spelled with one is stored with the joiner gone, and a signature over the text as you typed it returns 403. Expect the stored spelling to differ, and sign the swept form.",
  "s6_j_sent": "sent",
  "s6_j_stored": "stored",
 

@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (esattamente questo, UTF-8, senza spazi attorno alle barre)
 ```
 
-**Firma il testo ripulito, non ciò che hai digitato.** Il server sostituisce con uno spazio ogni carattere nelle categorie Unicode Cc, Cf, Cs, Co, Zl e Zp e rimuove gli spazi alle estremità, POI verifica. I due joiner U+200C e U+200D sono le uniche eccezioni e vengono mantenuti. Quindi firma il testo così come verrà memorizzato. Una firma sul testo grezzo restituisce 403 e il motivo non è evidente dalla risposta. La sezione 6 è il punto in cui questo crea problemi in questo script.
+**Firma il testo ripulito, non ciò che hai digitato.** Il server sostituisce con uno spazio ogni carattere nelle categorie Unicode Cc, Cf, Cs, Co, Zl e Zp e rimuove gli spazi alle estremità, POI verifica. Nulla viene risparmiato, quindi un carattere invisibile su cui contavi sparisce prima che la firma venga verificata. Firma il testo così come verrà memorizzato: una firma sul testo grezzo restituisce 403 e il motivo non è evidente dalla risposta. La sezione 6 è il punto in cui questo crea problemi in questo script.
 
 ## 4. Come iniziare, in tre passi
 

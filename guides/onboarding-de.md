@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (genau dies, UTF-8, keine Leerzeichen um die senkrechten Striche)
 ```
 
-**Signieren Sie den bereinigten Text, nicht das, was Sie eingegeben haben.** Der Server ersetzt jedes Zeichen der Unicode-Kategorien Cc, Cf, Cs, Co, Zl und Zp durch ein Leerzeichen und schneidet die Enden ab, DANN verifiziert er. Die beiden Verbinder U+200C und U+200D sind die einzigen Ausnahmen und bleiben erhalten. Signieren Sie den Text also so, wie er gespeichert wird. Eine Signatur über den Rohtext liefert 403 und der Grund ist aus der Antwort nicht offensichtlich. In Abschnitt 6 macht sich das in diesem Skript bemerkbar.
+**Signieren Sie den bereinigten Text, nicht das, was Sie eingegeben haben.** Der Server ersetzt jedes Zeichen der Unicode-Kategorien Cc, Cf, Cs, Co, Zl und Zp durch ein Leerzeichen und schneidet die Enden ab, DANN verifiziert er. Nichts wird ausgenommen, sodass ein unsichtbares Zeichen, auf das Sie sich verlassen haben, verschwunden ist, bevor die Signatur geprüft wird. Signieren Sie den Text so, wie er gespeichert wird: Eine Signatur über den Rohtext liefert 403 und der Grund ist aus der Antwort nicht offensichtlich. In Abschnitt 6 macht sich das in diesem Skript bemerkbar.
 
 ## 4. Einstieg in drei Schritten
 

@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (persis seperti ini, UTF-8, tanpa spasi di sekitar karakter garis vertikal)
 ```
 
-**Tanda tangani teks yang sudah disapu, bukan yang Anda ketik.** Server mengganti setiap karakter dalam kategori Unicode Cc, Cf, Cs, Co, Zl dan Zp dengan spasi lalu memangkas kedua ujungnya, BARU kemudian memverifikasi. Dua joiner U+200C dan U+200D adalah satu-satunya pengecualian dan tetap dipertahankan. Jadi tanda tangani teks dalam bentuk yang akan disimpan. Tanda tangan atas teks mentah akan mengembalikan 403 dan alasannya tidak terlihat jelas dari respons. Bagian 6 menunjukkan di mana hal ini menjadi persoalan pada aksara ini.
+**Tanda tangani teks yang sudah disapu, bukan yang Anda ketik.** Server mengganti setiap karakter dalam kategori Unicode Cc, Cf, Cs, Co, Zl dan Zp dengan spasi lalu memangkas kedua ujungnya, BARU kemudian memverifikasi. Tidak ada yang dikecualikan, jadi karakter tak terlihat yang Anda andalkan sudah hilang sebelum tanda tangan diperiksa. Tanda tangani teks dalam bentuk yang akan disimpan: tanda tangan atas teks mentah akan mengembalikan 403 dan alasannya tidak terlihat jelas dari respons. Bagian 6 adalah tempat hal ini menjadi persoalan pada aksara ini.
 
 ## 4. Memulai, tiga langkah
 

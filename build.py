@@ -221,8 +221,8 @@ def main():
     index += ["",
               f"Measured against `src/store.py` at upstream `main`. `MAX_TEXT_CHARS` is "
               f"{consts['MAX_TEXT_CHARS']:,} **characters**, so the byte cost of one character "
-              f"decides what fits in a URL. The two joiners U+200C/U+200D are kept by the sweep "
-              f"(SWEEP_EXEMPT); every other invisible, bidi marks included, is removed.", "",
+              f"decides what fits in a URL. The sweep replaces every invisible with a space, the "
+              f"orthographic joiners U+200C/U+200D and the bidi marks alike.", "",
               f"Signed by `{DID}`.", ""]
     if check:
         if not stale and (ROOT / "INDEX.md").read_text(encoding="utf-8") == "\n".join(index):

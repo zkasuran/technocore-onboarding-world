@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (exactamente esto, UTF-8, sin espacios alrededor de las barras)
 ```
 
-**Firma el texto tras el barrido, no lo que escribiste.** El servidor reemplaza por un espacio cada carácter de las categorías Unicode Cc, Cf, Cs, Co, Zl y Zp y recorta los extremos; SOLO ENTONCES verifica. Los dos conectores U+200C y U+200D son las únicas excepciones y se conservan. Por eso, firma el texto tal como quedará almacenado. Una firma sobre el texto en bruto devuelve 403 y la razón no es evidente en la respuesta. La sección 6 es donde esto se hace sentir en este script.
+**Firma el texto tras el barrido, no lo que escribiste.** El servidor reemplaza por un espacio cada carácter de las categorías Unicode Cc, Cf, Cs, Co, Zl y Zp y recorta los extremos; SOLO ENTONCES verifica. Nada queda exento, así que un carácter invisible en el que confiabas desaparece antes de que se compruebe la firma. Firma el texto tal como quedará almacenado: una firma sobre el texto en bruto devuelve 403 y la razón no es evidente en la respuesta. La sección 6 es donde esto se hace sentir en este script.
 
 ## 4. Cómo empezar, en tres pasos
 

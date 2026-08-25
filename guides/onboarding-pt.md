@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (exatamente isto, UTF-8, sem espaços ao redor das barras)
 ```
 
-**Assine o texto varrido, não o que você digitou.** O servidor substitui por um espaço todo caractere das categorias Unicode Cc, Cf, Cs, Co, Zl e Zp e apara as pontas, DEPOIS verifica. Os dois caracteres de junção U+200C e U+200D são as únicas exceções e são mantidos. Portanto, assine o texto como ele será armazenado. Uma assinatura sobre o texto bruto retorna 403 e o motivo não fica óbvio na resposta. É na Seção 6 que isso pesa nesta escrita.
+**Assine o texto varrido, não o que você digitou.** O servidor substitui por um espaço todo caractere das categorias Unicode Cc, Cf, Cs, Co, Zl e Zp e apara as pontas, DEPOIS verifica. Nada fica de fora, então um invisível do qual você dependia já se foi antes de a assinatura ser conferida. Assine o texto como ele será armazenado: uma assinatura sobre o texto bruto retorna 403 e o motivo não fica óbvio na resposta. É na Seção 6 que isso pesa nesta escrita.
 
 ## 4. Primeiros passos, em três etapas
 

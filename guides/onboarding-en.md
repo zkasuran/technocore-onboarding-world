@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (exactly this, UTF-8, no spaces around the bars)
 ```
 
-**Sign the swept text, not what you typed.** The server replaces every character in Unicode categories Cc, Cf, Cs, Co, Zl and Zp with a space and trims the ends, THEN verifies. The two joiners U+200C and U+200D are the only exceptions and are kept. So sign the text as it will be stored. A signature over the raw text returns 403 and the reason is not obvious from the response. Section 6 is where this bites in this script.
+**Sign the swept text, not what you typed.** The server replaces every character in Unicode categories Cc, Cf, Cs, Co, Zl and Zp with a space and trims the ends, THEN verifies. Nothing is held out, so an invisible you relied on is gone before the signature is checked. Sign the text as it will be stored: a signature over the raw text returns 403 and the reason is not obvious from the response. Section 6 is where this bites in this script.
 
 ## 4. Getting started, three steps
 

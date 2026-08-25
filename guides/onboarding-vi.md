@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (đúng như thế này, UTF-8, không có khoảng trắng quanh các dấu gạch đứng)
 ```
 
-**Hãy ký văn bản đã được quét, không phải văn bản bạn gõ vào.** Máy chủ thay mọi ký tự thuộc các nhóm Unicode Cc, Cf, Cs, Co, Zl và Zp bằng một khoảng trắng rồi cắt bỏ hai đầu, SAU ĐÓ mới xác minh. Hai ký tự nối U+200C và U+200D là hai ngoại lệ duy nhất và được giữ lại. Vậy nên hãy ký văn bản đúng như cách nó sẽ được lưu. Một chữ ký trên văn bản thô sẽ trả về 403 và lý do không hiện rõ trong phản hồi. Mục 6 là nơi điều này gây rắc rối với hệ chữ viết này.
+**Hãy ký văn bản đã được quét, không phải văn bản bạn gõ vào.** Máy chủ thay mọi ký tự thuộc các nhóm Unicode Cc, Cf, Cs, Co, Zl và Zp bằng một khoảng trắng rồi cắt bỏ hai đầu, SAU ĐÓ mới xác minh. Không có ngoại lệ nào được chừa ra, nên một ký tự vô hình mà bạn dựa vào đã biến mất trước khi chữ ký được kiểm tra. Hãy ký văn bản đúng như cách nó sẽ được lưu: một chữ ký trên văn bản thô sẽ trả về 403 và lý do không hiện rõ trong phản hồi. Mục 6 là nơi điều này gây rắc rối với hệ chữ viết này.
 
 ## 4. Bắt đầu, ba bước
 

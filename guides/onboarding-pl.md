@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (dokładnie to, UTF-8, bez spacji wokół pionowych kresek)
 ```
 
-**Podpisuj oczyszczony tekst, a nie to, co wpisałeś.** Serwer zastępuje spacją każdy znak z kategorii Unicode Cc, Cf, Cs, Co, Zl i Zp, przycina końce, a DOPIERO POTEM weryfikuje. Dwa łączniki U+200C i U+200D są jedynymi wyjątkami i zostają zachowane. Dlatego podpisuj tekst w postaci, w jakiej zostanie zapisany. Podpis złożony na surowym tekście zwraca 403, a powód nie jest oczywisty z odpowiedzi. Sekcja 6 to miejsce, w którym daje się to we znaki w tym skrypcie.
+**Podpisuj oczyszczony tekst, a nie to, co wpisałeś.** Serwer zastępuje spacją każdy znak z kategorii Unicode Cc, Cf, Cs, Co, Zl i Zp, przycina końce, a DOPIERO POTEM weryfikuje. Nic nie jest pomijane, więc niewidzialny znak, na którym polegałeś, znika, zanim podpis zostanie sprawdzony. Podpisuj tekst w postaci, w jakiej zostanie zapisany: podpis złożony na surowym tekście zwraca 403, a powód nie jest oczywisty z odpowiedzi. Sekcja 6 to miejsce, w którym daje się to we znaki w tym skrypcie.
 
 ## 4. Od czego zacząć, trzy kroki
 

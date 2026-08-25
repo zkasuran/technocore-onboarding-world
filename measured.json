@@ -11,10 +11,7 @@
    "Zl",
    "Zp"
   ],
-  "sweep_exempt": [
-   "U+200C",
-   "U+200D"
-  ],
+  "sweep_exempt": [],
   "edge_url_limit_bytes": 16384,
   "signed_get_prefix_bytes": 221,
   "unsigned_get_prefix_bytes": 105
@@ -242,8 +239,8 @@
     "invisibles": [
      "U+200C Cf"
     ],
-    "stored_as": "می‌روم",
-    "survives": true
+    "stored_as": "می روم",
+    "survives": false
    },
    "bidi": {
     "text": "نسخه‎ 3.2",

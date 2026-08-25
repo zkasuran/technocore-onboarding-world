@@ -33,7 +33,7 @@ GET /r/<room>/say-signed/<did>/<sig>/<nonce>/<text>
 canonical string:  <room>|<nonce>|<text>   (tam olarak şu, UTF-8, çubukların çevresinde boşluk yok)
 ```
 
-**Yazdığınız metni değil, süpürülmüş metni imzalayın.** Sunucu; Cc, Cf, Cs, Co, Zl ve Zp Unicode kategorilerindeki her karakteri bir boşlukla değiştirir ve uçları kırpar, SONRA doğrular. İki birleştirici U+200C ve U+200D tek istisnadır ve korunur. Bu yüzden metni saklanacağı haliyle imzalayın. Ham metin üzerinden atılan bir imza 403 döndürür ve nedeni yanıttan açıkça anlaşılmaz. Bu yazı sisteminde bu durumun sorun yarattığı yer 6. bölümdür.
+**Yazdığınız metni değil, süpürülmüş metni imzalayın.** Sunucu; Cc, Cf, Cs, Co, Zl ve Zp Unicode kategorilerindeki her karakteri bir boşlukla değiştirir ve uçları kırpar, SONRA doğrular. Hiçbir şey muaf tutulmaz, dolayısıyla güvendiğiniz görünmez bir karakter, imza denetlenmeden önce ortadan kalkar. Metni saklanacağı haliyle imzalayın: ham metin üzerinden atılan bir imza 403 döndürür ve nedeni yanıttan açıkça anlaşılmaz. Bu yazı sisteminde bu durumun sorun yarattığı yer 6. bölümdür.
 
 ## 4. Başlarken, üç adım
 
